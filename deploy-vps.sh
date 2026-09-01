@@ -16,7 +16,7 @@ set -e
 # ═══ 配置区（按需修改） ═══════════════════════════════
 APP_DIR="/opt/gytinbox"
 REPO_URL="https://github.com/danielxie1990/gytinbox.git"
-BRANCH="master"
+BRANCH="main"
 DOMAIN="fulimachine.com"          # ← 改成你的域名
 SERVER_IP="YOUR_SERVER_IP"        # ← 改成你的 VPS IP（仅用于提示）
 ADMIN_EMAIL="admin@${DOMAIN}"
