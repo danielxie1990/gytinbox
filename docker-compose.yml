@@ -1,4 +1,6 @@
-version: "3.8"
+# ─── VPS / Docker production deployment ─────────────
+# Usage:  docker compose up -d --build
+# Env:    copy .env.example → .env, fill JWT_SECRET (DATABASE_URL is managed here)
 
 services:
   postgres:
@@ -7,9 +9,7 @@ services:
     environment:
       POSTGRES_DB: product_site
       POSTGRES_USER: app
-      POSTGRES_PASSWORD: change-me-in-production
-    ports:
-      - "5432:5432"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me-in-production}
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -25,15 +25,17 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
+    env_file: .env
     environment:
-      DATABASE_URL: "postgresql://app:change-me-in-production@postgres:5432/product_site"
-      JWT_SECRET: "change-this-to-a-random-secret-in-production"
+      DATABASE_URL: postgresql://app:${POSTGRES_PASSWORD:-change-me-in-production}@postgres:5432/product_site
       NODE_ENV: production
+    volumes:
+      # Persist uploaded images/docs across container rebuilds
+      - uploads:/app/public/uploads
     depends_on:
       postgres:
         condition: service_healthy
-    entrypoint: >
-      sh -c "npx prisma migrate deploy && npm start"
 
 volumes:
   pgdata:
+  uploads:

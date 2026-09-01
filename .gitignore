@@ -14,3 +14,4 @@ gytinbox-deploy.zip
 deploy.sh
 extract.php
 .DS_Store
+ftp-credentials.json
